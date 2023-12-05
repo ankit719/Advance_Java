@@ -1,0 +1,131 @@
+/*In the current web app project there was concept of add to kart using session firstly in the user page some product are showind and then after selecting some product when user submit the product or restart applicattion they are able to see there previous kart product*/
+
+Prod.html
+----------
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h2>Select Products:</h2>
+  <form action="Serv1" method="post">
+    <label for="product1">
+      <input type="checkbox" id="product1" name="products[]" value="Product 1">
+      Product 1
+    </label><br>
+
+    <label for="product2">
+      <input type="checkbox" id="product2" name="products[]" value="Product 2">
+      Product 2
+    </label><br>
+
+    <label for="product3">
+      <input type="checkbox" id="product3" name="products[]" value="Product 3">
+      Product 3
+   </label><br>
+    <input type="submit" value="Submit">
+    
+  </form>
+</body>
+</html>
+********************************************************************
+Serv1.java
+------------
+
+import java.util.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+/**
+ * Servlet implementation class Serv1
+ */
+public class Serv1 extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    response.setContentType("text/html");
+
+	    String[] selectedProducts = request.getParameterValues("products[]");
+	    HttpSession session = request.getSession();
+	    @SuppressWarnings("unchecked")
+	    ArrayList<String> productList =new ArrayList<String>();
+	    if (selectedProducts != null) {
+	        // Add selected products to the ArrayList
+	        for (String product : selectedProducts) {
+	            productList.add(product);
+	        }
+	    } 
+	    session.setAttribute("productList", productList);
+	    PrintWriter out = response.getWriter();
+	    out.println("<html><body>");
+	    out.println("<a href=ViewServ>Selected Products:</a>");
+	    out.println("</body></html>");
+	}
+
+
+}
+**********************************************************************
+ViewServ.java
+--------------
+
+
+import jakarta.servlet.ServletException;
+import java.util.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+/**
+ * Servlet implementation class ViewServ
+ */
+public class ViewServ extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	     response.setContentType("text/html");
+
+	        // Retrieve the HttpSession
+	        HttpSession session = request.getSession();
+
+	        // Retrieve the ArrayList from the session
+	        @SuppressWarnings("unchecked")
+	        ArrayList<String> productList = (ArrayList<String>) session.getAttribute("productList");
+
+	        PrintWriter out = response.getWriter();
+	        out.println("<html><body>");
+
+	        if (productList != null && !productList.isEmpty()) {
+	            out.println("<h2>Products in the Session:</h2>");
+	            out.println("<ul>");
+	            for (String product : productList) {
+	                out.println("<li>" + product + "</li>");
+	            }
+	            out.println("</ul>");
+	        } else {
+	            out.println("<p>No products found in the session.</p>");
+	        }
+
+	        out.println("</body></html>");
+	}
+
+}
