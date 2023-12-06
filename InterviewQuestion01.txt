@@ -1,0 +1,184 @@
+Q1==DriverManager vs DataSource
+
+Ans = DataSource and the DriverManager are the two basic ways to connect to a database. DriverManager is a class but datasource is an interface.Drivermanager create connection from scratch whereas datasource use connection pool.
+
+
+
+Q2==Class.forName
+Ans=class.forName is used to explicitly load the class. 
+
+
+
+
+ Q3==what do you mean by jdbc is by default connected view of architecture
+Ans =result set is bydefault  connected with database.JDBC acts as a bridge between the Java programming language and different database management systems (DBMS).
+JDBC allows Java applications to perform operations like connecting to a database, sending queries, and manipulating data.
+When we say it's a "connected" architecture, it refers to the fact that JDBC facilitates the connection between a Java application and a database. 
+It allows the application to establish a connection to the database, execute SQL queries, retrieve results, and manage transactions.
+
+Q4==statement vs preparedstatement
+
+    statement=   It is used when SQL query is to be executed only once.
+                          In statement Parsing , Compilation , Execute plan creation  occur multiple time and then execution done.
+                              You can not pass parameters at runtime.
+                              execution is slow
+                              in this no place holder can be used.
+                       Statement is prone to SQL INjection 
+                              
+  preparedstatement =It is used when SQL query is to be executed multiple times.
+                                         In preparedstatement parsing,Compilation, Execute plan Creation only once and execute
+                                        You can pass parameter at Runtime
+                                       execution is fast
+                                        In this place holder method can be used
+					whereas PreparedStatement is much more secure than statement in terms of sql injection
+ 
+                             
+
+
+Q5==What happens when you run servlet for the first time?
+1) web container opens ur DD (web.xml)
+2) it searches the url-pattern by the name "/FirstServ"
+3) from url-pattern it finds out servlet-name .
+4) from servlet-name, it finds out servlet-class.
+5) once it gets the name of servlet-class, it tries to find out that .class file in "classes" folder of "dac"
+6)now it loads "FirstServ.class"
+7) instantiate "FirstServ" by invoking its "public no-arg constructor" using reflection api.
+8) it will invoke "init" method.
+9) thread is created or retrieved from thread pool.
+10) HttpServletRequest and HttpServletResponse are created.
+11) service() method is called.
+	service() method checks whether request is "get" or "post". if it is "get" service() method invokes "doGet()" and if it is "post" it invokes "doPost()"
+
+since we are running servlet directly it is "get" request , so service() method will call "doGet()" which we have overridden.
+
+	Imp. note:- when u refresh above link, i.e. for subsequent requests ( without makings changes in source code)
+
+		9)  10) and 11) steps will be performed.
+
+
+
+
+ Q6==get vs post
+Ans= doget method is called at serverside when the client wants to get the information to the server
+           dopost method is called at serverside when the client wants to post the information to the server
+ 
+
+Q7==in the dynamic web project what is the location of html and web.xml file
+Ans=   Web INF( Html and Web.xml is inside the web app )
+
+
+
+
+Q==how do you create PrintWriter in servlet?
+
+PrintWriter pw= response.getWriter();
+Printwriter is output stream use to print on browser , response.getwriter is used to show the updated records.
+
+
+
+
+Q==where exactly have you seen the application of static block in JDK
+Ans= In driver class there is a static block which contain the code of register Driver to DriverManager As soon the class get loaded the code is executed 
+
+
+
+ Q== scrollable and updatable result set
+By default ResultSet is readonly and forward only. It means while traversing through the ResultSet we cannot modify records and we have only one method for traversing i.e. "next".
+
+But we can make ResultSet updatable ( while traversing through the ResultSet we can modify records) and scrollable ( not only "next" we can invoke "previous" or "absolute" method also ).
+
+scrollable resultset we can move cursor forward,backward, last row and first row or a specific row
+Three different types of Scrollable resultset, forward only - meaning you can only go forward
+type_scroll_insensitive which allows both forward and backward movement and is insensitive to any changes made by the user where as in type_scroll_sensitive it will be sensitive to any changes made by the user.
+
+updatable resultset allows you to retrieve data as well as update the data in the database. which means you can modify the data and then persist the changes back in the database
+
+
+
+Q==what is the use of ResourceBundle class.
+Ans = ResourceBundle classis a singleton class and  is used to read data from properties file having only .properties extension.
+
+
+
+
+Q==in order to be a namingservice what are the requirements
+In order to be a naming service, a service must atleast provide the ability to bind names to objects and to look up objects by name.
+
+
+
+Q==what is special about JDBC API
+Ans=It means classes or interfaces.JDBC deals with interfaces more and not much with class as it is program to interface and has loose coupling using this we can connect to different databases like mysql, oracle etc. Independent connectivity between the Java applications and relational database servers (relational databases, spreadsheets, and flat files)
+
+difference between central repository and local repository
+
+
+
+Q==since in JDBC commit is by default true, how do you implement transaction?
+Ans setAutocommit  (False)
+
+
+Q==what is servlet ? what is the importance of server side technology?
+Ans ==A servlet is a Java program that runs on a web server and handles requests and responses from clients.
+server side technology is responsible from dynamic response.servlet is parent interface from which generucservlet is derived and from genericservlet httpservlet is derived. 
+
+Q== what is JNDI
+The Java Naming and Directory InterfaceTM (JNDI) is an application programming interface (API) that provides common way of accessing variety of directories(new, emerging, and already deployed).client can access any directory service/s using JNDI without worrying about their internal implementation.
+
+
+what is URL pattern in servlet tag
+url pattern is an xml tag which is used to specify which servlet should be called when a user enters a specific url.
+it can be a specific url or a wildcard pattern.
+
+how execute method is different from executeQuery and executeUpdate methods
+The execute() method is able to execute the both the DRL and DML statement .THERE are 5 steps
+:
+1.Establish  a connection with database
+2. query will be fired
+3.Resultset will be retrived .
+4.Resultset data willl be copied to cachedRowSetimpl.
+5.Connection will be close
+When we use selection group sql query(DRL) with the execute() then we will get ResultSet object 
+using getResultSet() method  at heap memory with the fetched data. 
+But execute() will return “true” as a Boolean value.
+
+when we use updation group sql query(DML) with execute() then we will get “ records updated count value” 
+using getUpdateCount() method at jdbc application. 
+But execute() will return “false” as a Boolean value.
+
+
+
+
+
+
+what is the use of ResultSetMetaData
+it is an interface
+ResultSetMetaData is an interface in the JDBC API that provides information about a ResultSet object. 
+This information includes: 
+Number of columns
+Column names
+Column data types
+Table name
+ResultSetMetaData is often used before processing the actual data of a ResultSet.
+
+
+
+
+why in JDBC most of them are interfaces , why not classes?
+1.jdbc interfaces are used in conjunction with deign pattern like factory patterns. Factories create instances of objects without specifying exact class of object that will be created.this is useful when different database vendors provide their own implementation of jdbs interfaces.
+2.Developers can focus on programming to interfaces rather than specific implementations
+leading to more maintainable and adaptable code.
+3.
+By using interfaces, JDBC allows for multiple implementations.
+Different database vendors can provide their own JDBC drivers that implement these interfaces
+enabling compatibility with various databases,
+offering more flexibility in design.
+
+
+
+
+
+Q==what is the use of CallableStatement in JDBC
+Ans It is used to execute store procedure.The CallableStatement interface extends the PreparedStatement interface
+provides methods to execute stored procedures along with input and output parameters.
+ 
+
