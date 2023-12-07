@@ -1,0 +1,217 @@
+Q1== types of parameters
+types of parameters passed to servlet
+
+1) request
+2) init or config
+3) context
+
+request:- these parameters are limited to only a particular request
+
+init or config :- these parameters are shared by all the requests to a particular servlet
+
+context :- these parameters are shared by all the servlets in that particular context (e.g. dac)
+
+Q2==redirect vs forward
+Redirect
+In case of redirect we have different requests.
+Client clearly knows from where he got response.
+Redirect can go beyond tomcat container.
+
+Forward
+In case of redirect we have same requests.
+Client doesn't knows from where he got response.
+Redirect cannot go beyond tomcat container.
+forward is faster performance wise.
+
+Q3==ServletConfig vs ServletContext
+In order to read init paramerter u need to use "ServletConfig";which is one per servlet and in order to read context parameter u need to use servletcontext which is one per context.
+
+Q4==how does container invoke init method
+The web container calls init method only once after creating the servlet insatance.
+
+Q5==advantage of URL Rewriting:
+The mechanism is browser independent and easy to debug as parameter are passed in the url.
+
+Q6==Filters
+Filters are pluggable components i.e. they can be easily plugged in or out ( using DD ).
+The main advantage of filters is maintenance. ie.you don't have to make changes inside your servlet for every new requirement/s given by client.
+
+There are 2 types of filters:
+	request filters:- they are called before request goes to servlet.
+	response filters:- they are called after servlet execution but before response goes to client.
+
+
+how do you create filter:
+	derive a class from "Filter" interface and define 3 methods of it:
+
+public void init(FilterConfig)
+public void doFilter(ServletRequest,ServletResponse,FilterChain)
+public void destroy()
+
+here "doFilter()" is the method where u will write a logic for which filter has been created.
+
+FilterChain represents the filter chain i.e. number of filters to be invoked along with Servlet or JSP. 
+Imp:- The last component inside filter chain is always a servlet or jsp.
+
+Q7==use of RequestDispatcher
+RequestDispatcher rd= request.getRequestDispatcher("ForwardServ");
+re.forward(request,response);
+RequestDispatcher is a api used for forwarding the request.It is used with method or response.
+
+Q8==what does properties file contain ? can it contain java objects?
+Properties files are like text file which contains key value pairs having extension .properties .Yes ,it contains java objects.
+
+Q9==how does session mechanism work behind the scene.
+http session interface is used to create a session in java.
+ HttpSesssion session=request.getSession(true); this stmt. will create a session if not exists , if session is there it will retrieve.
+When session is not there then :
+ Container will
+1. create objects 
+2.store attributes
+3.generate unique session  id
+4. create cookie
+5. put session unique id inside cookie
+6.add cookie inside response.
+When session is retrieved:
+HttpSesssion session=request.getSession(false);
+this stmt will give present session only otherwise null;
+Container will:
+1. retrieve cookie
+2.retrieve unique id from cookies
+3.try to match session id with session object if it matches  return session object else return null.
+
+
+Q10==what is load-on-startup
+Means load servlet when application starts. Means particular servlet gets loaded when application starts even before first request. 
+
+Q11==Attributes in servlet
+
+	there are 3 types of attributes  in servlet
+
+a) request
+b) session
+c) context
+
+request attributes can be accessible only till the request is available.
+
+session attributes are accessible till the session is alive.
+
+context attributes can be  accessible  to all the servlets/jsps of the context (e.g. myapp).
+
+Q12==attributes in jsp
+there are 4 scopes or attributes in jsp
+
+	page,request,session and application.
+
+scope/attribute    	object to represent
+
+page			pageContext
+request			request
+session			session
+application		application
+
+
+Q13==use of usebean tag
+
+Q14==explain declaration,expression,scriptlet
+jsp declaration :-     <%!                  %>
+		it is used to declare instance variables and define member functions.
+
+Jsp expression :-         <%=                 %>
+		It is used to write java expressions. 
+You can even call a method in jsp expression ,provided it has some return type other than “void”.
+Whatever u write in jsp expression, it goes directly to out.println() method of generated servlet. 
+
+Jsp scriptlet:-              <%                      %>
+		It is used to write pure java code because whatever u write in the scriptlet, that goes as it is in the generated servlet’s service method.
+
+Q15==how many implicit object are there in JSP
+API	                            Implicit Object
+JSPWriter          	       out
+HttpServletRequest	request
+HttpServletResponse	response
+HttpSession            	session
+ServletContext       	 application
+ServletConfig	                config
+JspException          	exception
+(available to only error pages.)
+PageContext	              pageContext
+Object	                      page
+
+Q16==when u run jsp for the first time and for the subsequent times
+When jsp is requested for the first time :
+1)jsp is converted into .java  (servlet)
+2) servlet is compiled by a web container.
+3).class is loaded
+4)Instantiated using “public no-arg constructor”.
+5)Initialized  by calling  “init() “ method.
+6)Thread is created or retrieved from a thread pool.
+7)request and response are created
+8)service() method is called.
+
+For subsequent requests to same jsp , provided jsp source code is not modified :
+1)Thread is created or retrieved from a thread pool.
+2)request and response are created
+3)service() method is called.
+
+Q17==errorPage vs isErrorPage
+page directive's two more attributes are 
+
+Q18==errorPage and isErrorPage
+
+errorPage is used to inform web container about error page you are going to use for this jsp.
+
+isErrorPage is used to make jsp as error page.
+	isErrorPage is "false" by default. That is JSP page is not an error page by default.
+	in order to make JSP as an error page , inside it you have to say  isErrorPage="true"
+	"exception" implicit object can be accessed inside error jsp only.
+
+Q19==include directive vs include standard action
+include directive is used to include the content of other page inside the current page at translation time (when jsp is converted to java).
+include standard action is used to include the response of other jsp inside the current jsp.
+what happens from the EL point of view when you store request attributes.
+
+Q20==what is the use of taglib directive?  what are the attributes of taglib directive?
+Taglib directive is used to create custom tags.
+
+
+Q21==what do you mean by filters can be plugged in plugged out without disturbing the java code?
+Filters can be plugged in means we can write entry/comment in DD and plugout means to remove entry/comment on basis of client requirement without disturbing java code. This features makes filter special.
+
+how does useBean tag work internally?
+
+what is ORM
+
+difference between SessionFactory and session
+
+differnt types of cache
+
+types of object in hibernate
+
+refresh method in hibernate
+
+merge method in hibernate
+
+how many ways we can configure hibernate application?
+
+framework vs library
+
+DAO
+
+why spring is lightweight
+
+local repository vs central repository
+
+what is dialect in hibernate?
+
+
+
+
+
+
+
+
+
+
+
+
